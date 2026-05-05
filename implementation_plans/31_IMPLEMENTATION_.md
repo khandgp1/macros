@@ -24,7 +24,7 @@ The following steps will be taken to perform the branch replacement:
 - [x] Ensure working directory is clean (`git status`)
 - [x] Switch to the `main` branch (`git checkout main`)
 - [x] Reset `main` to match `prePhone` (`git reset --hard prePhone`)
-- [ ] (Optional) Force push to remote (`git push origin main --force`)
+- [x] (Optional) Force push to remote (`git push origin main --force`)
 
 ## Verification Plan
 
