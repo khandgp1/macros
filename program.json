@@ -1,0 +1,58 @@
+{
+  "days": [
+    {
+      "title": "Intro",
+      "focus": "Vibe Coding Workflow",
+      "description": "Mastering the loop between human intent and AI execution.",
+      "mindset": "You are the Architect. The LLM is your Project Manager. Project IDX is your Lead Developer. You don't need to speak the machine's language fluently; you just need to guide the conversation.",
+      "exercises": [
+        {
+          "name": "1. The Kickstart: AI Blueprinting",
+          "sets": "Idea",
+          "reps": "Blueprint",
+          "note": "Describe your vision in plain English to generate a No-Code Implementation Plan."
+        },
+        {
+          "name": "2. The Implementation: Anti-Gravity (IDX)",
+          "sets": "Blueprint",
+          "reps": "Codebase",
+          "note": "Feed your plan into Project IDX to generate the initial codebase and see a tangible preview instantly."
+        },
+        {
+          "name": "3. The Review: Strategic Feedback",
+          "sets": "Iterative",
+          "reps": "Update Plan",
+          "note": "Identify changes and describe adjustments back to an LLM to generate a Focused Update Plan."
+        },
+        {
+          "name": "4. The Iteration: Refine and Repeat",
+          "sets": "Continuous",
+          "reps": "Vision",
+          "note": "Move back and forth between the plan and implementation until the project perfectly matches your vision."
+        }
+      ]
+    },
+    {
+      "title": "Snippets",
+      "focus": "Ready-to-Use Prompt Boilerplates",
+      "description": "Copy and paste these templates to accelerate your Vibe Coding workflow.",
+      "exercises": [
+        {
+          "name": "Request an Implementation Plan",
+          "content": "Create an implementation plan for this update, called '##_IMPLEMENTATION_.md'\n- Add this file to the implementation_plans folder, create one if needed\n\nDon't change any code yet, only create that file, also include a checklist so we can track our progress as we go, on this or other chats with AI dev agents.",
+          "note": "Append this to the end of any new request. Replace ## with the next number in the sequence."
+        },
+        {
+          "name": "Update an Implementation Plan",
+          "content": "Update the implementation plan for this update, called '##_IMPLEMENTATION_.md'\n\nDon't change any code yet, only create that file, also include a checklist so we can track our progress as we go, on this or other chats with AI dev agents.",
+          "note": "Append this when revisiting an existing plan. Replace ## with the plan number to update."
+        },
+        {
+          "name": "Execute the Plan",
+          "content": "Great. Let's implement that, update the checklist as you go. @",
+          "note": "Replace @ with the plan file reference. Execute"
+        }
+      ]
+    }
+  ]
+}
