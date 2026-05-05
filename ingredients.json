@@ -1,0 +1,23 @@
+{
+  "fage": {
+    "name": "0% Fage Greek Yogurt",
+    "protein": 10.3,
+    "calories": 54,
+    "baseGrams": 100,
+    "defaultGrams": 170
+  },
+  "hemp": {
+    "name": "Hemp Hearts",
+    "protein": 10,
+    "calories": 180,
+    "baseGrams": 30,
+    "defaultGrams": 30
+  },
+  "honey": {
+    "name": "Honey",
+    "protein": 0,
+    "calories": 60,
+    "baseGrams": 21,
+    "defaultGrams": 7
+  }
+}

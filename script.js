@@ -1,17 +1,30 @@
 let appData = null;
+let ingredientsData = null;
 let currentTab = 0;
 
 
 async function init() {
     try {
-        const response = await fetch('program.json');
-        appData = await response.json();
+        const [progRes, ingRes] = await Promise.all([
+            fetch('program.json'),
+            fetch('ingredients.json')
+        ]);
+
+        appData = await progRes.json().catch(err => {
+            console.error("Error parsing program.json:", err);
+            return { days: [] };
+        });
+        ingredientsData = await ingRes.json().catch(err => {
+            console.error("Error parsing ingredients.json:", err);
+            return {};
+        });
+
         const container = document.getElementById('tab-container');
 
         // Create Tabs (Showing 'Intro' and 'Snippets')
         appData.days.forEach((day, index) => {
             if (index > 1) return; // Hide Day 3, etc.
-            
+
             const btn = document.createElement('button');
             btn.className = `tab-btn ${index === 0 ? 'active' : ''}`;
             btn.innerText = day.title.toUpperCase();
@@ -22,7 +35,7 @@ async function init() {
         // Initial Load
         renderContent();
     } catch (error) {
-        console.error("Error loading program:", error);
+        console.error("Error loading program or ingredients:", error);
     }
 }
 
@@ -37,11 +50,12 @@ function switchTab(index) {
 function renderContent() {
     const content = document.getElementById('workout-content');
     const day = appData.days[currentTab];
-    
-    // Scope the wider max-width to the Snippets tab only
-    content.classList.remove('snippets-wide');
+
+    // Scope the wider max-width to specific tabs
+    content.classList.remove('snippets-wide', 'intro-wide');
 
     if (day.title.toLowerCase() === 'intro') {
+        content.classList.add('intro-wide');
         renderIntro(day);
     } else if (day.title.toLowerCase() === 'snippets') {
         content.classList.add('snippets-wide');
@@ -101,112 +115,80 @@ function renderWorkout(day) {
 }
 
 const drawerContent = {
-    0: {
-        title: "THE KICKSTART: AI BLUEPRINTING",
-        html: `
-            <div class="blueprint-layout">
-                <section class="blueprint-intro">
-                    <p><strong>Goal:</strong> Architect before you build. Generate a detailed No-Code Implementation Plan.</p>
-                </section>
-
-                <section class="tcrei-framework">
-                    <h4>The T.C.R.E.I. Framework</h4>
-                    <p class="framework-subtitle">Tiny Crabs Ride Enormous Iguanas</p>
-                    <ul class="framework-list">
-                        <li><strong>Task:</strong> Define a specific expert persona tailored to your niche.</li>
-                        <li><strong>Context:</strong> Provide the background, project goals, target audience, and specific constraints.</li>
-                        <li><strong>Reference:</strong> Provide examples if possible to ground the prompts.</li>
-                        <li><strong>Evaluate:</strong> Assess implementation plan.</li>
-                        <li><strong>Iterate:</strong> Make small, surgical adjustments to the prompt to refine the plan.</li>
-                    </ul>
-                </section>
-
-                <section class="master-blueprint">
-                    <h4>The "Master Blueprint" Prompt</h4>
-                    <p class="minor-instruction">Copy and paste this boilerplate to START your prompt.</p>
-                    
-                    <div class="pro-tip">
-                        <strong>Pro Tip:</strong> Use the "Deep Thinking" model setting (available in Gemini) to generate the plan. If you hit rate limits, switch to the highest performance-tier model available. Enable any "Enhanced Prompt" features if your LLM offers them.
-                    </div>
-
-                    <div class="prompt-box">
-                        <div class="prompt-header">
-                            <span>Boilerplate Prompt</span>
-                            <button class="copy-btn">Copy</button>
-                        </div>
-                        <pre><code>Act as an Expert Software Architect. Your task is to create a detailed, step-by-step roadmap for a new project. This roadmap must outline features, file structures, and logic—without writing the actual implementation code yet.
-
-Architecture Requirements:
-* Modular component structure with separate files for each major section.
-* Keep individual files short (approx. 600 lines max) to simplify future refactoring.
-* Prioritize robust, reusable code blocks for future scalability.
-* Use placeholders for complex state management; focus on logic flow.
-* Suggest best practices and a tech stack.
-* Format the entire output in Markdown for easy copying.</code></pre>
-                    </div>
-
-                    <p class="workflow-marker">Copy and paste this to complete the initial prompt</p>
-
-                    <div class="prompt-box">
-                        <div class="prompt-header">
-                            <span>Personalized Prompt</span>
-                            <button class="copy-btn">Copy</button>
-                        </div>
-                        <pre><code>The Project Specifics:
-Now, apply the requirements above to the following project:
-* Goal: [e.g., ETL + Data Cleaning + Basic Data Analysis for a CDC Project focused on Census Demographics]
-* Tech Stack: [e.g., I want to use the R language exclusively.]
-* Sample Data: [Paste your sample data or schema here]</code></pre>
-                    </div>
-                </section>
-                <p class="workflow-marker final-instruction">Evaluate, Iterate, Complete</p>
-            </div>
-        `
-    },
-    1: {
-        title: "2. THE IMPLEMENTATION: ANTI-GRAVITY (IDX)",
-        html: `
-            <div class="implementation-placeholder">
-                <div class="placeholder-watermark">02</div>
-                <div class="heartbeat-pulse"></div>
-                <div class="placeholder-content-wrapper">
-                    <h3>PAUSING PROGRESS</h3>
-                    <p>Construction will resume once the <strong>The Kickstart</strong> plan is complete.</p>
-                </div>
-            </div>
-        `
-    },
-    2: {
-        title: "3. THE REVIEW: STRATEGIC FEEDBACK",
-        html: `
-            <div class="implementation-placeholder">
-                <div class="placeholder-watermark">03</div>
-                <div class="heartbeat-pulse"></div>
-                <div class="placeholder-content-wrapper">
-                    <h3>PAUSING PROGRESS</h3>
-                    <p>Evaluation will resume once the <strong>Implementation</strong> phase is initiated.</p>
-                </div>
-            </div>
-        `
-    },
-    3: {
-        title: "4. THE ITERATION: REFINE AND REPEAT",
-        html: `
-            <div class="implementation-placeholder">
-                <div class="placeholder-watermark">04</div>
-                <div class="heartbeat-pulse"></div>
-                <div class="placeholder-content-wrapper">
-                    <h3>PAUSING PROGRESS</h3>
-                    <p>Refinement loop will activate once the <strong>initial development cycle</strong> is established.</p>
-                </div>
-            </div>
-        `
-    }
 };
+
+function renderMacroCalc() {
+    if (!ingredientsData) return '<div class="macro-calc-container">Loading calculator data...</div>';
+
+    const container = document.createElement('div');
+    container.className = 'macro-calc-container';
+    container.innerHTML = `
+        <div class="calc-header">
+            <h3>Breakfast Macro Table</h3>
+        </div>
+        <div class="macro-table">
+            <div class="table-row header">
+                <div class="col-name">Ingredient</div>
+                <div class="col-grams">Grams</div>
+                <div class="col-p">Protein</div>
+                <div class="col-c">Calories</div>
+            </div>
+            ${Object.keys(ingredientsData).map(key => `
+                <div class="table-row ingredient-row" data-key="${key}">
+                    <div class="col-name">${ingredientsData[key].name}</div>
+                    <div class="col-grams">
+                        <input type="number" id="${key}-grams" placeholder="0" min="0" value="${ingredientsData[key].defaultGrams || 0}">
+                    </div>
+                    <div class="col-p"><span id="${key}-p">0</span>g</div>
+                    <div class="col-c"><span id="${key}-c">0</span></div>
+                </div>
+            `).join('')}
+            <div class="table-row total-row">
+                <div class="col-name">TOTAL</div>
+                <div class="col-grams"></div>
+                <div class="col-p"><span id="total-protein">0</span>g</div>
+                <div class="col-c"><span id="total-calories">0</span> Cal</div>
+            </div>
+        </div>
+    `;
+
+    const updateTotals = () => {
+        let totalP = 0;
+        let totalC = 0;
+
+        Object.keys(ingredientsData).forEach(key => {
+            const grams = parseFloat(document.getElementById(`${key}-grams`).value) || 0;
+            const data = ingredientsData[key];
+
+            // Calculate per-gram based on baseGrams
+            const p = (grams * data.protein) / data.baseGrams;
+            const c = (grams * data.calories) / data.baseGrams;
+
+            document.getElementById(`${key}-p`).innerText = Math.round(p);
+            document.getElementById(`${key}-c`).innerText = Math.round(c);
+
+            totalP += p;
+            totalC += c;
+        });
+
+        document.getElementById('total-protein').innerText = Math.round(totalP);
+        document.getElementById('total-calories').innerText = Math.round(totalC);
+    };
+
+    setTimeout(() => {
+        Object.keys(ingredientsData).forEach(key => {
+            const input = document.getElementById(`${key}-grams`);
+            if (input) input.oninput = updateTotals;
+        });
+        updateTotals();
+    }, 0);
+
+    return container.outerHTML;
+}
 
 function renderIntro(day) {
     const content = document.getElementById('workout-content');
-    
+
     const innerContent = `
         <div class="intro-container layout-bento">
             <div class="grid-wrapper">
@@ -232,6 +214,7 @@ function renderIntro(day) {
             <h2 style="font-weight:300;">${day.focus}</h2>
             <p class="section-description">${day.description}</p>
         </div>
+        ${renderMacroCalc()}
         ${innerContent}
         ${mindset}
     `;
@@ -248,7 +231,7 @@ function openDrawer(index) {
     document.getElementById('side-drawer').classList.add('active');
     document.getElementById('drawer-overlay').classList.add('active');
     document.body.classList.add('drawer-open');
-    
+
     // Re-bind copy buttons for the new content
     bindCopyButtons();
 }
@@ -281,9 +264,9 @@ function bindCopyButtons() {
         copyBtn.onclick = async () => {
             const codeElement = copyBtn.closest('.prompt-box').querySelector('code');
             if (!codeElement) return;
-            
+
             const text = codeElement.innerText;
-            
+
             // 1. Try Modern Clipboard API
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 try {

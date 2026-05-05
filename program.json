@@ -2,35 +2,10 @@
   "days": [
     {
       "title": "Intro",
-      "focus": "Vibe Coding Workflow",
-      "description": "Mastering the loop between human intent and AI execution.",
-      "mindset": "You are the Architect. The LLM is your Project Manager. Project IDX is your Lead Developer. You don't need to speak the machine's language fluently; you just need to guide the conversation.",
-      "exercises": [
-        {
-          "name": "1. The Kickstart: AI Blueprinting",
-          "sets": "Idea",
-          "reps": "Blueprint",
-          "note": "Describe your vision in plain English to generate a No-Code Implementation Plan."
-        },
-        {
-          "name": "2. The Implementation: Anti-Gravity (IDX)",
-          "sets": "Blueprint",
-          "reps": "Codebase",
-          "note": "Feed your plan into Project IDX to generate the initial codebase and see a tangible preview instantly."
-        },
-        {
-          "name": "3. The Review: Strategic Feedback",
-          "sets": "Iterative",
-          "reps": "Update Plan",
-          "note": "Identify changes and describe adjustments back to an LLM to generate a Focused Update Plan."
-        },
-        {
-          "name": "4. The Iteration: Refine and Repeat",
-          "sets": "Continuous",
-          "reps": "Vision",
-          "note": "Move back and forth between the plan and implementation until the project perfectly matches your vision."
-        }
-      ]
+      "focus": "",
+      "description": "",
+      "mindset": "",
+      "exercises": []
     },
     {
       "title": "Snippets",
