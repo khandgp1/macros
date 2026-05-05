@@ -814,22 +814,107 @@ body.drawer-open {
     color: #000;
 }
 
-@media (max-width: 600px) {
+/* ============================================================
+   MOBILE — iPhone (≤430px)
+   All desktop rules above are untouched.
+   ============================================================ */
+@media (max-width: 430px) {
+
+    /* Phase 1 — Page-Level Layout */
+    header {
+        padding: 28px 16px;
+    }
+
+    h1 {
+        font-size: 1.6rem;
+        letter-spacing: 1px;
+    }
+
+    .subtitle {
+        font-size: 0.7rem;
+        letter-spacing: 2px;
+    }
+
+    #workout-content {
+        padding: 0 12px;
+        box-sizing: border-box;
+        width: 100%;
+    }
+
+    /* Phase 2 — Macro Calculator Container */
+    .macro-calc-container {
+        padding: 14px;
+        border-radius: 8px;
+        margin-bottom: 24px;
+        box-sizing: border-box;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .calc-header h3 {
+        font-size: 0.85rem;
+        letter-spacing: 1px;
+        margin-bottom: 16px;
+    }
+
+    /* Phase 3 — Table Columns & Typography */
     .table-row {
-        grid-template-columns: 1.2fr 1fr 0.8fr 0.8fr;
-        padding: 12px 10px;
+        grid-template-columns: 2fr 0.9fr 0.75fr 0.75fr;
+        padding: 10px 8px;
+        gap: 0 3px;
+    }
+
+    .table-row.header {
+        font-size: 0.65rem;
+        letter-spacing: 0.8px;
     }
 
     .col-name {
+        font-size: 0.8rem;
+    }
+
+    .col-p,
+    .col-c {
         font-size: 0.85rem;
     }
 
-    .col-grams input {
-        width: 70px;
-        padding: 6px 8px;
+    .col-p {
+        margin-left: 0;
     }
 
-    .macro-calc-container {
-        padding: 15px;
+    .total-row .col-p,
+    .total-row .col-c {
+        font-size: 1rem;
+    }
+
+    /* Phase 4 — Grams Input */
+    .col-grams input {
+        width: 56px;
+        padding: 5px 4px;
+        font-size: 0.8rem;
+    }
+
+    /* Phase 5 — Bento Cards Grid */
+    .layout-bento .grid-wrapper {
+        grid-template-columns: 1fr;
+    }
+
+    .layout-bento .bento-card {
+        padding: 14px;
+    }
+
+    .layout-bento h3 {
+        font-size: 0.8rem;
+        letter-spacing: 0.5px;
+    }
+
+    /* Phase 6 — Section Description & Focus Heading */
+    #workout-content h2 {
+        font-size: 1.1rem;
+    }
+
+    .section-description {
+        font-size: 0.85rem;
+        margin-top: 10px;
     }
 }
