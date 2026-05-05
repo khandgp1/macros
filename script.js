@@ -21,7 +21,7 @@ async function init() {
 
         const container = document.getElementById('tab-container');
 
-        // Create Tabs (Showing 'Intro' and 'Snippets')
+        // Create Tabs (Showing 'Breakfast' and 'Meat')
         appData.days.forEach((day, index) => {
             if (index > 1) return; // Hide Day 3, etc.
 
@@ -54,44 +54,18 @@ function renderContent() {
     // Scope the wider max-width to specific tabs
     content.classList.remove('snippets-wide', 'intro-wide');
 
-    if (day.title.toLowerCase() === 'intro') {
+    if (day.title.toLowerCase() === 'breakfast') {
         content.classList.add('intro-wide');
         renderIntro(day);
-    } else if (day.title.toLowerCase() === 'snippets') {
-        content.classList.add('snippets-wide');
-        renderSnippets(day);
+    } else if (day.title.toLowerCase() === 'meat') {
+        content.classList.add('intro-wide');
+        renderIntro(day);
     } else {
         renderWorkout(day);
     }
 }
 
-function renderSnippets(day) {
-    const content = document.getElementById('workout-content');
-    content.innerHTML = `
-        <div style="text-align:center; margin-bottom: 30px;">
-            <h2 style="font-weight:300;">${day.focus}</h2>
-            ${day.description ? `<p class="section-description">${day.description}</p>` : ''}
-        </div>
-        <div class="snippets-container">
-            ${day.exercises.map(ex => `
-                <div class="snippet-item">
-                    <h3>${ex.name}</h3>
-                    <p class="snippet-note">${ex.note}</p>
-                    <div class="prompt-box">
-                        <div class="prompt-header">
-                            <span>Boilerplate Snippet</span>
-                            <button class="copy-btn">Copy</button>
-                        </div>
-                        <pre><code>${ex.content}</code></pre>
-                    </div>
-                </div>
-            `).join('')}
-        </div>
-    `;
 
-    // Re-bind copy buttons for the new content
-    bindCopyButtons();
-}
 
 function renderWorkout(day) {
     const content = document.getElementById('workout-content');
@@ -203,11 +177,7 @@ function renderIntro(day) {
         </div>
     `;
 
-    const mindset = `
-        <div class="mindset-quote">
-            ${day.mindset}
-        </div>
-    `;
+
 
     content.innerHTML = `
         <div style="text-align:center; margin-bottom: 30px;">
@@ -216,7 +186,6 @@ function renderIntro(day) {
         </div>
         ${renderMacroCalc()}
         ${innerContent}
-        ${mindset}
     `;
 }
 

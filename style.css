@@ -191,29 +191,6 @@ footer {
     color: var(--text-main);
 }
 
-/* Mindset Quote Styling */
-.mindset-quote {
-    background: #2D2D2D;
-    color: #FFF;
-    padding: 40px;
-    border-radius: 4px;
-    margin-top: 50px;
-    text-align: center;
-    position: relative;
-    font-style: italic;
-    font-weight: 300;
-    line-height: 1.8;
-}
-
-.mindset-quote::before {
-    content: '“';
-    position: absolute;
-    top: 10px;
-    left: 20px;
-    font-size: 4rem;
-    opacity: 0.2;
-}
-
 /* --- Side Drawer & Overlay --- */
 
 #drawer-overlay {
