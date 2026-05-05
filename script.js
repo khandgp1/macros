@@ -111,7 +111,7 @@ function renderMacroCalc() {
                 <div class="table-row ingredient-row" data-key="${key}">
                     <div class="col-name">${ingredientsData[key].name}</div>
                     <div class="col-grams">
-                        <input type="number" id="${key}-grams" placeholder="0" min="0" value="${ingredientsData[key].defaultGrams || 0}">
+                        <input type="number" inputmode="decimal" id="${key}-grams" placeholder="0" min="0" value="${ingredientsData[key].defaultGrams || 0}">
                     </div>
                     <div class="col-p"><span id="${key}-p">0</span>g</div>
                     <div class="col-c"><span id="${key}-c">0</span></div>
