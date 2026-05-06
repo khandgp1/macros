@@ -91,27 +91,39 @@ function renderWorkout(day) {
 const drawerContent = {
 };
 
-function renderMacroCalc() {
+function renderMacroCalc(day) {
     if (!ingredientsData) return '<div class="macro-calc-container">Loading calculator data...</div>';
+
+    const isMeatTab = day.title.toLowerCase() === 'meat';
+    const title = isMeatTab ? 'Meats Macro Table' : 'Breakfast Macro Table';
+    
+    // Filter ingredients based on tab
+    const filteredKeys = Object.keys(ingredientsData).filter(key => {
+        if (isMeatTab) {
+            return key === 'chicken';
+        } else {
+            return ['fage', 'hemp', 'honey'].includes(key);
+        }
+    });
 
     const container = document.createElement('div');
     container.className = 'macro-calc-container';
     container.innerHTML = `
         <div class="calc-header">
-            <h3>Breakfast Macro Table</h3>
+            <h3>${title}</h3>
         </div>
         <div class="macro-table">
             <div class="table-row header">
                 <div class="col-name">Ingredient</div>
-                <div class="col-grams">Grams</div>
+                <div class="col-grams">${isMeatTab ? 'Ounces' : 'Grams'}</div>
                 <div class="col-p">Protein</div>
                 <div class="col-c">Calories</div>
             </div>
-            ${Object.keys(ingredientsData).map(key => `
+            ${filteredKeys.map(key => `
                 <div class="table-row ingredient-row" data-key="${key}">
                     <div class="col-name">${ingredientsData[key].name}</div>
                     <div class="col-grams">
-                        <input type="number" inputmode="decimal" id="${key}-grams" placeholder="0" min="0" value="${ingredientsData[key].defaultGrams || 0}">
+                        <input type="number" inputmode="decimal" id="${key}-grams" placeholder="0" min="0" value="${ingredientsData[key].defaultGrams || ingredientsData[key].defaultOz || 0}">
                     </div>
                     <div class="col-p"><span id="${key}-p">0</span>g</div>
                     <div class="col-c"><span id="${key}-c">0</span></div>
@@ -130,13 +142,16 @@ function renderMacroCalc() {
         let totalP = 0;
         let totalC = 0;
 
-        Object.keys(ingredientsData).forEach(key => {
-            const grams = parseFloat(document.getElementById(`${key}-grams`).value) || 0;
+        filteredKeys.forEach(key => {
+            const el = document.getElementById(`${key}-grams`);
+            if (!el) return;
+            const inputValue = parseFloat(el.value) || 0;
             const data = ingredientsData[key];
+            const base = data.baseGrams || data.baseOz || 1;
 
-            // Calculate per-gram based on baseGrams
-            const p = (grams * data.protein) / data.baseGrams;
-            const c = (grams * data.calories) / data.baseGrams;
+            // Calculate macros based on input value relative to base unit
+            const p = (inputValue * data.protein) / base;
+            const c = (inputValue * data.calories) / base;
 
             document.getElementById(`${key}-p`).innerText = Math.round(p);
             document.getElementById(`${key}-c`).innerText = Math.round(c);
@@ -150,7 +165,7 @@ function renderMacroCalc() {
     };
 
     setTimeout(() => {
-        Object.keys(ingredientsData).forEach(key => {
+        filteredKeys.forEach(key => {
             const input = document.getElementById(`${key}-grams`);
             if (input) input.oninput = updateTotals;
         });
@@ -184,7 +199,7 @@ function renderIntro(day) {
             <h2 style="font-weight:300;">${day.focus}</h2>
             <p class="section-description">${day.description}</p>
         </div>
-        ${renderMacroCalc()}
+        ${renderMacroCalc(day)}
         ${innerContent}
     `;
 }

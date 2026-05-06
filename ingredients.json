@@ -19,5 +19,12 @@
     "calories": 60,
     "baseGrams": 21,
     "defaultGrams": 30
+  },
+  "chicken": {
+    "name": "Kirkland Rotisserie Chicken",
+    "protein": 19,
+    "calories": 140,
+    "baseOz": 3,
+    "defaultOz": 6
   }
 }
