@@ -23,7 +23,7 @@ async function init() {
 
         // Create Tabs (Showing 'Breakfast' and 'Meat')
         appData.days.forEach((day, index) => {
-            if (index > 1) return; // Hide Day 3, etc.
+            if (index > 2) return; // Hide Day 4, etc.
 
             const btn = document.createElement('button');
             btn.className = `tab-btn ${index === 0 ? 'active' : ''}`;
@@ -60,6 +60,9 @@ function renderContent() {
     } else if (day.title.toLowerCase() === 'meat') {
         content.classList.add('intro-wide');
         renderIntro(day);
+    } else if (day.title.toLowerCase() === 'fruit') {
+        content.classList.add('intro-wide');
+        renderIntro(day);
     } else {
         renderWorkout(day);
     }
@@ -94,13 +97,20 @@ const drawerContent = {
 function renderMacroCalc(day) {
     if (!ingredientsData) return '<div class="macro-calc-container">Loading calculator data...</div>';
 
-    const isMeatTab = day.title.toLowerCase() === 'meat';
-    const title = isMeatTab ? 'Meats Macro Table' : 'Breakfast Macro Table';
+    const tabTitle = day.title.toLowerCase();
+    const isMeatTab = tabTitle === 'meat';
+    const isFruitTab = tabTitle === 'fruit';
+
+    let title = 'Breakfast Macro Table';
+    if (isMeatTab) title = 'Meats Macro Table';
+    if (isFruitTab) title = 'Fruit Macro Table';
     
     // Filter ingredients based on tab
     const filteredKeys = Object.keys(ingredientsData).filter(key => {
         if (isMeatTab) {
             return key === 'chicken';
+        } else if (isFruitTab) {
+            return ['blueberries', 'kiwis'].includes(key);
         } else {
             return ['fage', 'hemp', 'honey'].includes(key);
         }
